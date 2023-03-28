@@ -21,7 +21,7 @@ import {
   registerPartials,
 } from './render-utils';
 import { formatContents } from './utils';
-export type ObjectLiteralDeclarationStyle = "table" | "list"
+export type ObjectLiteralDeclarationStyle = 'table' | 'list';
 
 export class MarkdownTheme extends Theme {
   allReflectionsHaveOwnDocument!: boolean;
@@ -70,7 +70,9 @@ export class MarkdownTheme extends Theme {
     this.preserveAnchorCasing = this.getOption(
       'preserveAnchorCasing',
     ) as boolean;
-    this.objectLiteralTypeDeclarationStyle = this.getOption("objectLiteralTypeDeclarationStyle") as ObjectLiteralDeclarationStyle;
+    this.objectLiteralTypeDeclarationStyle = this.getOption(
+      'objectLiteralTypeDeclarationStyle',
+    ) as ObjectLiteralDeclarationStyle;
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,
@@ -112,9 +114,17 @@ export class MarkdownTheme extends Theme {
     }
     project.children?.forEach((child: Reflection) => {
       if (child instanceof DeclarationReflection) {
-        this.buildUrls(child as DeclarationReflection, urls);
+        this.buildUrls(child, urls);
       }
     });
+
+    (project as any).index = {
+      storybookName: 'README',
+      css: '../markdown.css',
+    };
+    (project as any).storybookName = 'app-modules';
+    (project as any).css = '../markdown.css';
+
     return urls;
   }
 
@@ -143,11 +153,16 @@ export class MarkdownTheme extends Theme {
     } else if (reflection.parent) {
       this.applyAnchorUrl(reflection, reflection.parent, true);
     }
+
+    const storybookName = reflection.url?.replace(/\.stories\.mdx$/, '');
+    (reflection as any).storybookName = storybookName;
+    (reflection as any).css = '../../markdown.css';
+
     return urls;
   }
 
   toUrl(mapping: any, reflection: DeclarationReflection) {
-    return mapping.directory + '/' + this.getUrl(reflection) + '.md';
+    return mapping.directory + '/' + this.getUrl(reflection) + '.stories.mdx';
   }
 
   getUrl(reflection: Reflection, relative?: Reflection): string {
@@ -390,6 +405,6 @@ export class MarkdownTheme extends Theme {
   }
 
   get globalsFile() {
-    return 'modules.md';
+    return 'modules.stories.mdx';
   }
 }
