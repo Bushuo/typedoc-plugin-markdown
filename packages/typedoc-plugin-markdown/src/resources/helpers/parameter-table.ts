@@ -114,7 +114,7 @@ function getDefaultValue(parameter: ParameterReflection) {
 function hasDefaultValues(parameters: ParameterReflection[]) {
   const defaultValues = (parameters as ParameterReflection[]).map(
     (param) =>
-      param.defaultValue !== '{}' &&
+      param.defaultValue !== '\\{}' &&
       param.defaultValue !== '...' &&
       !!param.defaultValue,
   );

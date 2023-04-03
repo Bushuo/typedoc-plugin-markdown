@@ -120,10 +120,8 @@ export class MarkdownTheme extends Theme {
 
     (project as any).index = {
       storybookName: 'README',
-      css: '../markdown.css',
     };
     (project as any).storybookName = 'app-modules';
-    (project as any).css = '../markdown.css';
 
     return urls;
   }
@@ -154,15 +152,14 @@ export class MarkdownTheme extends Theme {
       this.applyAnchorUrl(reflection, reflection.parent, true);
     }
 
-    const storybookName = reflection.url?.replace(/\.stories\.mdx$/, '');
+    const storybookName = reflection.url?.replace(/\.mdx$/, '');
     (reflection as any).storybookName = storybookName;
-    (reflection as any).css = '../../markdown.css';
 
     return urls;
   }
 
   toUrl(mapping: any, reflection: DeclarationReflection) {
-    return mapping.directory + '/' + this.getUrl(reflection) + '.stories.mdx';
+    return mapping.directory + '/' + this.getUrl(reflection) + '.mdx';
   }
 
   getUrl(reflection: Reflection, relative?: Reflection): string {
@@ -405,6 +402,6 @@ export class MarkdownTheme extends Theme {
   }
 
   get globalsFile() {
-    return 'modules.stories.mdx';
+    return 'modules.mdx';
   }
 }

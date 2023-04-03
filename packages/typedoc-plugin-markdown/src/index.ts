@@ -51,7 +51,7 @@ export function load(app: Application) {
     help: '[Markdown Plugin] The file name of the entry document.',
     name: 'entryDocument',
     type: ParameterType.String,
-    defaultValue: 'README.stories.mdx',
+    defaultValue: 'README.mdx',
   });
 
   app.options.addDeclaration({
